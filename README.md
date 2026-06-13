@@ -77,6 +77,6 @@ ContactHub was created to provide a lightweight and efficient contact management
 
 ## Preview
 
-![ContactHub Preview](assets/ContactHubView)
+![ContactHub Preview](images/ContactHubView.png)
 
 
