@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ContactHub - Smart Contact Manager</title>
+    <link rel="icon" href="./images/favicon.png" />
+    <link rel="stylesheet" href="./css/all.min.css" />
+    <link rel="stylesheet" href="./css/media.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+
+  <body>
+    <div id="holding-all-form-things" class="fill-contact-form d-none">
+      <div class="to-blur-back"></div>
+      <div class="the-form">
+        <div class="inner-form" id="innerForm">
+          <div
+            class="form-header-changable sticky-top d-flex justify-content-between"
+          >
+            <h2
+              style="
+                color: var(--color-gray-900);
+                font-weight: var(--font-weight-bold);
+                font-size: var(--text-xl);
+              "
+              id="titleOfForm"
+            >
+              Add New Contact
+            </h2>
+
+            <div
+              class="d-flex justify-content-center align-items-center close-form-button"
+              onclick="closeForm()"
+            >
+              <i class="fa-solid fa-x" style="font-size: var(--text-lg)"></i>
+            </div>
+          </div>
+          <form action="">
+            <!--image-->
+            <div
+              class="d-flex flex-column justify-content-center align-items-center"
+            >
+              <div class="form-image-holder">
+                <i class="fa-solid fa-user"></i>
+              </div>
+              <label class="button-to-upload-image" for="photo-input">
+                <i class="fa-solid fa-camera"></i> Change Photo
+              </label>
+              <input
+                type="file"
+                id="photo-input"
+                accept="image/*"
+                class="visually-hidden"
+              />
+            </div>
+
+            <!--name-->
+            <div class="mb-3">
+              <label for="contactName" class="form-label">
+                Full Name
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                oninput="isValidContact(contactInputRegex.contactName, this)"
+                type="text"
+                class="form-control"
+                id="contactName"
+                placeholder="Enter full name"
+              />
+              <p
+                class="d-none"
+                style="
+                  font-size: var(--text-xs);
+                  color: var(--color-rose-500);
+                  margin-top: calc(var(--spacing) * 1.5);
+                "
+              >
+                Name should contain only letters and spaces (2-50 characters)
+              </p>
+            </div>
+
+            <!--phone-->
+            <div class="mb-3">
+              <label for="contactPhone" class="form-label">
+                Phone Number
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                oninput="isValidContact(contactInputRegex.contactPhone, this)"
+                type="tel"
+                class="form-control"
+                id="contactPhone"
+                placeholder="e.g., 01012345678"
+              />
+              <p
+                class="d-none"
+                style="
+                  font-size: var(--text-xs);
+                  color: var(--color-rose-500);
+                  margin-top: calc(var(--spacing) * 1.5);
+                "
+              >
+                Please enter a valid Egyptian phone number
+              </p>
+            </div>
+
+            <!--email-->
+            <div class="mb-3">
+              <label for="contactEmail" class="form-label">
+                Email Address
+              </label>
+              <input
+                type="email"
+                class="form-control"
+                id="contactEmail"
+                placeholder="name@example.com"
+              />
+            </div>
+
+            <!--address-->
+            <div class="mb-3">
+              <label for="contactAddress" class="form-label"> Address </label>
+              <input
+                type="text"
+                class="form-control"
+                id="contactAddress"
+                placeholder="name@example.com"
+              />
+            </div>
+
+            <!--Group-->
+            <div class="mb-3">
+              <label for="contactGroup" class="form-label"> Group </label>
+              <select
+                class="form-select"
+                id="contactGroup"
+                aria-label="Default select example"
+              >
+                <option selected disabled hidden id="defaultOption">
+                  Select a group
+                </option>
+                <option value="Family">Family</option>
+                <option value="Friends">Friends</option>
+                <option value="Work">Work</option>
+                <option value="School">School</option>
+                <option value="other">other</option>
+              </select>
+            </div>
+
+            <!--notes-->
+            <div class="mb-4">
+              <label for="contactNote" class="form-label">Notes</label>
+              <textarea
+                class="form-control"
+                id="contactNote"
+                aria-label="With textarea"
+                rows="3"
+                style="resize: none"
+                placeholder="Add notes about this contact"
+              ></textarea>
+            </div>
+
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input border border-1 border-black"
+                type="checkbox"
+                id="favoriteCheckbox"
+                value="f"
+              />
+              <label class="form-check-label" for="favoriteCheckbox">
+                <span
+                  style="
+                    font-size: var(--text-sm);
+                    color: var(--color-gray-600);
+                  "
+                >
+                  <i
+                    class="fa-solid fa-star"
+                    style="color: var(--color-amber-400)"
+                  ></i>
+                  Favorite
+                </span>
+              </label>
+            </div>
+            <div class="form-check form-check-inline mb-4">
+              <input
+                class="form-check-input border border-1 border-black"
+                type="checkbox"
+                id="emergencyCheckbox"
+                value="e"
+              />
+              <label class="form-check-label" for="emergencyCheckbox">
+                <span
+                  style="
+                    font-size: var(--text-sm);
+                    color: var(--color-gray-600);
+                  "
+                >
+                  <i
+                    class="fa-solid fa-heart-pulse"
+                    style="color: var(--color-rose-500)"
+                  ></i>
+                  Emergency
+                </span>
+              </label>
+            </div>
+
+            <!--submit buttons-->
+            <div class="button-holder-in-form text-center">
+              <div
+                id="addContactbtn"
+                class="border-0 send-or-cancel-btn order-lg-1"
+                onclick="addContact(-1)"
+              >
+                <i class="fa-solid fa-check"></i> Save Contact
+              </div>
+
+              <div
+                class="border-0 send-or-cancel-btn order-lg-0"
+                style="
+                  color: var(--color-gray-700);
+                  background-color: var(--color-gray-100);
+                  background-image: none;
+                "
+                onclick="closeForm()"
+              >
+                Cancel
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <header class="position-sticky top-0 z-3">
+      <nav class="navbar navbar-expand d-flex">
+        <div class="container px-lg-5 d-flex justify-content-between">
+          <div class="navbar-brand d-flex align-items-center gap-2">
+            <div class="icon-site-holder">
+              <i class="fa-solid fa-contact-book text-white fs-5"></i>
+            </div>
+            <div>
+              <h1>
+                Contact<span style="color: var(--color-violet-600)">Hub</span>
+              </h1>
+              <p>Smart Contact Manager</p>
+            </div>
+          </div>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-2">
+              <li class="nav-item">
+                <button class="border-0" onclick="openForm()">
+                  <i class="fa-solid fa-plus"></i>
+                  Add<span class="d-none d-md-inline"> Contact</span>
+                </button>
+              </li>
+              <li class="nav-item d-none d-md-block">
+                <div>
+                  <i class="fa-solid fa-bell"></i>
+                </div>
+              </li>
+              <li class="nav-item d-none d-md-block">
+                <div>
+                  <i class="fa-solid fa-gear"></i>
+                </div>
+              </li>
+              <li class="nav-item">
+                <div>
+                  <img class="w-100" src="./images/avatar-1.jpg" alt="" />
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="container px-lg-5">
+      <div class="container-fluid p-0">
+        <div class="row g-3 mb-4">
+          <div class="col-6 col-lg-4">
+            <div class="m-section-holder">
+              <div
+                class="d-flex align-items-center gap-3"
+                style="height: calc(var(--spacing) * 12)"
+              >
+                <div class="f-main-icon-holder">
+                  <i class="fa-solid fa-users"></i>
+                </div>
+                <div>
+                  <p
+                    style="
+                      color: var(--color-gray-500);
+                      font-weight: var(--font-weight-medium);
+                      font-size: var(--text-xs);
+                    "
+                  >
+                    TOTAL
+                  </p>
+                  <p
+                    style="
+                      font-size: var(--text-2xl);
+                      color: var(--color-gray-900);
+                      font-weight: var(--font-weight-bold);
+                    "
+                    id="totalNumberOfContact"
+                  >
+                    0
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-4">
+            <div class="m-section-holder">
+              <div
+                class="d-flex align-items-center gap-3"
+                style="height: calc(var(--spacing) * 12)"
+              >
+                <div
+                  class="f-main-icon-holder"
+                  style="
+                    background-image: linear-gradient(
+                      to top left,
+                      var(--color-orange-500),
+                      var(--color-amber-400)
+                    );
+                  "
+                >
+                  <i class="fa-solid fa-star"></i>
+                </div>
+                <div>
+                  <p
+                    style="
+                      color: var(--color-gray-500);
+                      font-weight: var(--font-weight-medium);
+                      font-size: var(--text-xs);
+                    "
+                  >
+                    FAVORITES
+                  </p>
+                  <p
+                    style="
+                      font-size: var(--text-2xl);
+                      color: var(--color-gray-900);
+                      font-weight: var(--font-weight-bold);
+                    "
+                    id="totalNumberOfFavContact"
+                  >
+                    0
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-4">
+            <div class="m-section-holder">
+              <div
+                class="d-flex align-items-center gap-3"
+                style="height: calc(var(--spacing) * 12)"
+              >
+                <div
+                  class="f-main-icon-holder"
+                  style="
+                    background-image: linear-gradient(
+                      to bottom right,
+                      var(--color-red-600),
+                      var(--color-rose-500)
+                    );
+                  "
+                >
+                  <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <div>
+                  <p
+                    style="
+                      color: var(--color-gray-500);
+                      font-weight: var(--font-weight-medium);
+                      font-size: var(--text-xs);
+                    "
+                  >
+                    EMERGENCY
+                  </p>
+                  <p
+                    style="
+                      font-size: var(--text-2xl);
+                      color: var(--color-gray-900);
+                      font-weight: var(--font-weight-bold);
+                    "
+                    id="totalNumberOfEmerContact"
+                  >
+                    0
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row g-4">
+          <div class="col-12 col-lg-9">
+            <div style="margin-bottom: calc(var(--spacing) * 5)">
+              <h2
+                style="
+                  font-size: var(--text-3xl);
+                  color: var(--color-gray-900);
+                  font-weight: var(--font-weight-bold);
+                  margin: 0;
+                "
+              >
+                All Contacts
+              </h2>
+              <p
+                style="
+                  margin-top: calc(var(--spacing) * 1);
+                  font-size: var(--text-sm);
+                  color: var(--color-gray-500);
+                "
+              >
+                Manage and organize your 7 contacts
+              </p>
+            </div>
+
+            <div class="position-relative mb-4">
+              <i
+                class="fa-solid fa-magnifying-glass position-absolute top-50"
+                style="
+                  padding-left: calc(var(--spacing) * 4);
+                  left: calc(var(--spacing) * 0);
+                  color: var(--color-gray-400);
+                  transform: translateY(-50%);
+                "
+              ></i>
+              <input
+                type="search"
+                class="form-control"
+                oninput="searchByContacttNameEmailPhone(this.value)"
+                placeholder="Seach By name, phone, or email..."
+                style="
+                  padding-left: calc(var(--spacing) * 10);
+                  padding-block: calc(var(--spacing) * 3.5);
+                  background-color: var(--color-white);
+                  border: 1px solid var(--color-gray-200);
+                  border-radius: var(--radius-xl);
+                "
+              />
+            </div>
+            <div class="container-fluid p-0">
+              <div class="row g-4" id="containerElement"></div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-3">
+            <div class="fav-contact-holder-ui">
+              <div class="fav-line-fav-contact">
+                <div class="f-i-f-contact">
+                  <i class="fa-solid fa-star"></i>
+                </div>
+                <div>
+                  <h2
+                    style="
+                      color: var(--color-gray-900);
+                      font-weight: var(--font-weight-semibold);
+                      font-size: var(--text-base);
+                      margin: 0;
+                    "
+                  >
+                    Favorites
+                  </h2>
+                  <p style="color: var(--color-gray-500); font-size: 11px">
+                    Quick access to starred contacts
+                  </p>
+                </div>
+              </div>
+              <div class="show-fav-contact-holder">
+                <ul id="samllFavContact"></ul>
+              </div>
+            </div>
+            <div class="fav-contact-holder-ui">
+              <div class="fav-line-fav-contact fav-line-ui">
+                <div class="f-i-f-contact f2f2-emergen">
+                  <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <div>
+                  <h2
+                    style="
+                      color: var(--color-gray-900);
+                      font-weight: var(--font-weight-semibold);
+                      font-size: var(--text-base);
+                      margin: 0;
+                    "
+                  >
+                    Emergency
+                  </h2>
+                  <p style="color: var(--color-gray-500); font-size: 11px">
+                    Important contacts for urgent calls
+                  </p>
+                </div>
+              </div>
+              <div class="show-fav-contact-holder">
+                <ul id="samllEmerContact"></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./js/index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </body>
+</html>
